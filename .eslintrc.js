@@ -1,0 +1,46 @@
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: ['plugin:prettier/recommended'],
+  overrides: [],
+  parserOptions: {
+    ecmaVersion: 'latest',
+  },
+  rules: {
+    'vue/valid-v-model': 'off',
+    'vue/no-unused-vars': 'off',
+    'vue/no-unused-components': 'off',
+    'no-unused-vars': 'error',
+    'prefer-promise-reject-errors': 'off',
+    'no-redeclare': 'off',
+    'padded-blocks': ['error', 'never'],
+    'arrow-spacing': ['error', { before: true, after: true }],
+    'spaced-comment': 'off',
+    'no-trailing-spaces': 'off',
+    'space-before-blocks': ['error', 'always'],
+    'space-before-function-paren': ['error', 'always'],
+    semi: ['off', 'always'],
+    // "newline-after-var": ["error", "always"],
+    'comma-spacing': [
+      'error',
+      {
+        before: false,
+        after: true,
+      },
+    ],
+    'space-infix-ops': 'error',
+    'key-spacing': ['error', { beforeColon: false }],
+    'object-curly-spacing': ['error', 'always'],
+    indent: ['error', 2, { SwitchCase: 1 }],
+    'no-spaced-func': 'error',
+    'generator-star-spacing': 'off',
+    eqeqeq: 'off',
+    camelcase: 'off',
+    'eol-last': 0,
+    // allow debugger during development
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': 'off',
+  },
+}

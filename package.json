@@ -1,0 +1,31 @@
+{
+  "name": "fileupload",
+  "version": "1.0.0",
+  "description": "file upload client&&server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "fix": "eslint --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Godlovesmile/FileUpload.git"
+  },
+  "author": "lizhi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Godlovesmile/FileUpload/issues"
+  },
+  "homepage": "https://github.com/Godlovesmile/FileUpload#readme",
+  "devDependencies": {
+    "eslint": "^8.22.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "2.7.1"
+  }
+}
