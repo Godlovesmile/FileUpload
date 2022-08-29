@@ -6,6 +6,7 @@ module.exports = {
   extends: ['plugin:prettier/recommended'],
   overrides: [],
   // 'parser': '@typescript-eslint/parser',
+  // vue 官方提供了一个 ESLint 插件 eslint-plugin-vue，它提供了 parser 和 rules。parser 为 vue-eslint-parser，rules 为 https://eslint.vuejs.org/rules
   parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaVersion: 'latest',
