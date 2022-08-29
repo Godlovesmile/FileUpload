@@ -6,7 +6,7 @@ module.exports = {
   extends: ['plugin:prettier/recommended'],
   overrides: [],
   // 'parser': '@typescript-eslint/parser',
-  // parser: 'vue-eslint-parser',
+  parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
