@@ -26,7 +26,7 @@ module.exports = {
     'spaced-comment': 'off',
     'no-trailing-spaces': 'off',
     'space-before-blocks': ['error', 'always'],
-    'space-before-function-paren': ['error', 'always'],
+    // 'space-before-function-paren': ['error', 'always'],
     semi: ['off', 'always'],
     // "newline-after-var": ["error", "always"],
     'comma-spacing': [
@@ -41,6 +41,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     indent: ['error', 2, { SwitchCase: 1 }],
     'no-spaced-func': 'error',
+    'space-before-function-paren': 0,
     'generator-star-spacing': 'off',
     eqeqeq: 'off',
     camelcase: 'off',
