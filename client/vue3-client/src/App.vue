@@ -56,7 +56,7 @@ async function uploadChunks() {
 
       return { formData }
     })
-    .map((formData) => {
+    .map(({ formData }) => {
       request({
         url: 'http://localhost:3000',
         data: formData,
