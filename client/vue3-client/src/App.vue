@@ -44,6 +44,19 @@ function createFileChunk(file, size = SIZE) {
   return fileChunkList
 }
 
+// 合并切片的请求
+async function mergeRequest() {
+  await request({
+    url: 'http://localhost:3000/merge',
+    headers: {
+      'content-type': 'application/json',
+    },
+    data: JSON.stringify({
+      size: SIZE,
+      filename: container.file?.name,
+    }),
+  })
+}
 // 上传切片
 async function uploadChunks() {
   const requestList = data
@@ -64,6 +77,8 @@ async function uploadChunks() {
     })
 
   await Promise.all(requestList)
+  // 合并切片请求
+  await mergeRequest()
 }
 </script>
 
