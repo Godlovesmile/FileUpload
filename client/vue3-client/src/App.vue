@@ -78,6 +78,11 @@ async function uploadChunks() {
 
   await Promise.all(requestList)
   // 合并切片请求
+  // await mergeRequest()
+}
+
+async function handleMerge() {
+  // 合并切片请求
   await mergeRequest()
 }
 </script>
@@ -85,6 +90,7 @@ async function uploadChunks() {
 <template>
   <input type="file" @change="handleFileChange" />
   <el-button type="success" @click="handleUpload">点击上传</el-button>
+  <el-button type="success" @click="handleMerge">合并文件</el-button>
   <RouterView />
 </template>
 

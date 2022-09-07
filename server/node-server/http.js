@@ -14,7 +14,6 @@ const resolvePost = (req) =>
       chunk += data
     })
     req.on('end', () => {
-      console.log('=== chunk ===', chunk)
       resolve(JSON.parse(chunk || '{}'))
     })
   })
@@ -33,8 +32,10 @@ const pipeStream = (path, writeStream) => {
 }
 // 合并切片
 const mergeFileChunk = async (filePath, filename, size) => {
-  const chunDir = path.resolve(UPLOAD_DIR, 'chunkDir' + filename)
-  const chunkPaths = await fse.readdir(chunDir)
+  const chunkDir = path.resolve(UPLOAD_DIR, 'chunkDir' + filename)
+  const chunkPaths = await fse.readdir(chunkDir)
+
+  console.log('=== chunkPaths ===', chunkPaths)
 
   // 根据切片下标进行排序
   chunkPaths.sort((a, b) => a.split('-')[1] - b.split('-')[1])
@@ -52,7 +53,8 @@ const mergeFileChunk = async (filePath, filename, size) => {
   )
 
   // 合并后删除保存切片的目录
-  fse.rmdirSync(chunDir)
+  console.log('=== remove ===', chunkDir)
+  fse.rmdirSync(chunkDir)
 }
 
 server.on('request', async (req, res) => {
@@ -70,6 +72,7 @@ server.on('request', async (req, res) => {
     const { filename, size } = data
     const filePath = path.resolve(UPLOAD_DIR, `${filename}`)
 
+    console.log('=== filePath ===', filePath)
     await mergeFileChunk(filePath, filename, size)
 
     res.end(JSON.stringify({ code: 0, message: 'file merged success' }))
