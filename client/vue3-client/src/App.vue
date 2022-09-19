@@ -4,15 +4,19 @@ import request from '../../common/http.js'
 
 const SIZE = 10 * 1024 * 1024
 const container = reactive({ file: null })
-let data = reactive<any[]>([])
+let data = ref<any[]>([])
 let fakeUploadPercentage = ref(0)
 
 const uploadPercentage = computed(() => {
-  if (!container.file || !data.length) return 0
+  console.log('=== test ===', data.value.length)
+  if (!container.file || !data.value.length) return 0
+  console.log('===', JSON.parse(JSON.stringify(data.value)))
+  const loaded = data.value.map((item) => (item.size || SIZE) * item.percentage).reduce((acc, cur) => acc + cur)
+  console.log(loaded)
+  const process = parseInt((loaded / container.file?.size).toFixed(2))
+  console.log('=== process ===', process)
 
-  const loaded = data.map((item) => item.size * item.percentage).reduce((acc, cur) => acc + cur)
-
-  return parseInt((loaded / container.file?.size).toFixed(2))
+  return process
 })
 
 watch(uploadPercentage, (now) => {
@@ -38,15 +42,15 @@ async function handleUpload() {
   console.log('=== file ===', container.file)
   const fileChunkList = createFileChunk(container.file)
 
-  data = fileChunkList.map(({ file }, index) => ({
+  data.value = fileChunkList.map(({ file }, index) => ({
     chunk: file,
     index,
     hash: container.file?.name + '-' + index,
     percentage: 0,
   }))
 
-  console.log('=== data ===', data)
-  uploadChunks()
+  console.log('=== data ===', data.value)
+  await uploadChunks()
 }
 
 // 生成文件切片
@@ -86,7 +90,7 @@ function createProgressHandler(item: { percentage: number }) {
 
 // 上传切片
 async function uploadChunks() {
-  const requestList = data
+  const requestList = data.value
     .map(({ chunk, hash, index }) => {
       const formData = new FormData()
 
@@ -100,7 +104,7 @@ async function uploadChunks() {
       request({
         url: 'http://localhost:3000',
         data: formData,
-        onProgress: createProgressHandler(data[index]),
+        onProgress: createProgressHandler(data.value[index]),
       })
     })
 
@@ -119,6 +123,7 @@ async function handleMerge() {
   <input type="file" @change="handleFileChange" />
   <el-button type="success" @click="handleUpload">点击上传</el-button>
   <el-button type="success" @click="handleMerge">合并文件</el-button>
+  <!-- <el-button type="success" @click="handleTest">test</el-button> -->
   <div>
     <div>percentage</div>
     <el-progress :percentage="uploadPercentage"></el-progress>
