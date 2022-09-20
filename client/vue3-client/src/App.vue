@@ -47,6 +47,7 @@ async function handleUpload() {
     index,
     hash: container.file?.name + '-' + index,
     percentage: 0,
+    size: file.size,
   }))
 
   console.log('=== data ===', data.value)
