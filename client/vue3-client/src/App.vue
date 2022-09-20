@@ -129,6 +129,19 @@ async function handleMerge() {
     <div>percentage</div>
     <el-progress :percentage="uploadPercentage"></el-progress>
   </div>
+  <el-table :data="data">
+    <el-table-column prop="hash" label="chunk hash" align="center"></el-table-column>
+    <el-table-column label="size(KB)" align="center" width="120">
+      <template v-slot="{ row }">
+        {{ row.size }}
+      </template>
+    </el-table-column>
+    <el-table-column label="percentage" align="center">
+      <template v-slot="{ row }">
+        <el-progress :percentage="row.percentage" color="#909399"></el-progress>
+      </template>
+    </el-table-column>
+  </el-table>
   <RouterView />
 </template>
 
