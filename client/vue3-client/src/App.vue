@@ -3,7 +3,7 @@ import { reactive, ref, computed, watch } from 'vue'
 import request from '../../common/http.js'
 
 const SIZE = 10 * 1024 * 1024
-const container = reactive({ file: null })
+const container = reactive<{ file: any; worker: any; hash: any }>({ file: null, worker: null, hash: '' })
 let data = ref<any[]>([])
 let fakeUploadPercentage = ref(0)
 
@@ -42,12 +42,14 @@ async function handleUpload() {
   console.log('=== file ===', container.file)
   const fileChunkList = createFileChunk(container.file)
 
+  container.hash = await calculateHash(fileChunkList)
   data.value = fileChunkList.map(({ file }, index) => ({
     chunk: file,
     index,
-    hash: container.file?.name + '-' + index,
+    hash: container.hash + '-' + index,
     percentage: 0,
     size: file.size,
+    fileHash: container.hash,
   }))
 
   console.log('=== data ===', data.value)
@@ -77,6 +79,7 @@ async function mergeRequest() {
     data: JSON.stringify({
       size: SIZE,
       filename: container.file?.name,
+      fileHash: container.hash,
     }),
   })
 }
@@ -98,6 +101,7 @@ async function uploadChunks() {
       formData.append('chunk', chunk)
       formData.append('hash', hash)
       formData.append('filename', container.file?.name)
+      formData.append('fileHash', container.hash)
 
       return { formData, index }
     })
@@ -117,6 +121,22 @@ async function uploadChunks() {
 async function handleMerge() {
   // 合并切片请求
   await mergeRequest()
+}
+
+// 生成文件 hash (web-worker)
+async function calculateHash(fileChunkList: any) {
+  return new Promise((resolve) => {
+    // 添加 worker 属性
+    container.worker = new Worker('/hash.js')
+    container.worker.postMessage({ fileChunkList })
+    container.worker.onmessage = (e: any) => {
+      const { percentage, hash } = e.data
+      console.log('=== message ===', percentage, e)
+      if (hash) {
+        resolve(hash)
+      }
+    }
+  })
 }
 </script>
 
